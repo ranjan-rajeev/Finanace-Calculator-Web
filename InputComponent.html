@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -33,7 +35,7 @@
 
 </head>
 
-<body onload="getComponentList1()">
+<body onload="getComponentList()">
     <div class="row">
         <div class="container">
             <h2 style="align-items: center;">Add Input</h2>
@@ -41,52 +43,155 @@
 
             <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
 
-            <form id="dashBoardForm" onsubmit="addComponent();">
-                <div class="row" style="margin-top: 30px">
-                    <div class="col-md-2">
-                        <label for="inpId">Input Id*</label>
-                        <input type="text" class="form-control fullname" id="inpId" placeholder="Enter Input Id" required>
-                    </div>
+            <!-- <form id="dashBoardForm" onsubmit="addComponent();"> -->
 
-                    <div class="col-md-2">
-                        <label for="calId">Calculator Id*</label>
-                        <input type="text" class="form-control fullname" id="calId" placeholder="Calculator Id" required>
-                    </div>
+            <!-- Main layout -->
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-2">
+                    <label for="inpId">Input Id*</label>
+                    <input type="text" class="form-control fullname" id="inpId" placeholder="Enter Input Id" required>
+                </div>
 
-
-                    <div class="col-md-2">
-                        <label for="iconUrl">Input Title *</label>
-                        <input type="text" class="form-control fullname" id="inpTitle" placeholder="Enter Input Title" required>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="iconUrl">Input key *</label>
-                        <input type="text" class="form-control fullname" id="iconUrl" placeholder="Enter Input key (a -z) " required>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="viewType">Input View Type*</label>
-
-                        <select id="viewType" class="form-control fullname" onchange="hideShowComponent(this)">
-                            <option value=0>Select View Type</option>
-                            <option value=1>EditText</option>
-                            <option value=2>Date</option>
-                            <option value=3>Spinner</option>
-                            <option value=4>Spinner With EditText</option>
-                            <option value=5>Button</option>
-                            <option value=6>WebView</option>
-                            <option value=7>Header Text</option>
-
-                        </select>
-
-                    </div>
-
+                <div class="col-md-2">
+                    <label for="calId">Calculator Id*</label>
+                    <input type="text" class="form-control fullname" id="calId" placeholder="Calculator Id" required>
                 </div>
 
 
-                <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+                <div class="col-md-2">
+                    <label for="inpTitle">Input Title *</label>
+                    <input type="text" class="form-control fullname" id="inpTitle" placeholder="Enter Input Title"
+                        required>
+                </div>
 
-            </form>
-            <h2 style="align-items: center;">Calculator List </h2>
+                <div class="col-md-3">
+                    <label for="inpKey">Input key *</label>
+                    <input type="text" class="form-control fullname" id="inpKey" placeholder="Enter Input key (a -z) "
+                        required>
+                </div>
+                <div class="col-md-3">
+                    <label for="viewType">Input View Type*</label>
+
+                    <select id="viewType" class="form-control fullname" onchange="hideShowComponent(this)">
+                        <option value=0>Select View Type</option>
+                        <option value=1>EditText</option>
+                        <option value=2>Date</option>
+                        <option value=3>Spinner</option>
+                        <option value=4>Spinner With EditText</option>
+                        <option value=5>Button</option>
+                        <option value=6>WebView</option>
+                        <option value=7>Header Text</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- Edittext Layout -->
+            <div class="row" style="margin-top: 30px; display: none;" id="edittext">
+                <div class="col-md-3">
+                    <label for="inpType">Input Type *</label>
+                    <select id="inpType" class="form-control fullname">
+                        <option value=1>Number</option>
+                        <option value=2>Decimal Number</option>
+                        <option value=3>Text</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="length"> Maximum Length*</label>
+                    <input type="text" class="form-control fullname" id="length" placeholder="Enter max length"
+                        required>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="isFocus">Is Focusable*</label>
+                    <select id="isFocus" class="form-control fullname">
+                        <option value=1>TRUE</option>
+                        <option value=2>FALSE</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="regex">Input Regex*</label>
+                    <input type="text" class="form-control fullname" id="regex" placeholder="Enter Input Regex"
+                        required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="spinnerEditTextData">Input Data</label>
+                    <textarea type="text" class="form-control fullname" id="spinnerEditTextData"
+                        placeholder="Enter Key Value array"></textarea>
+                </div>
+            </div>
+
+
+            <!-- DATE Layout -->
+            <div class="row" style="margin-top: 30px; display: none;" id="datelayout">
+                <div class="col-md-4">
+                    <label for="minDate">Min Long Date </label>
+                    <input type="text" class="form-control fullname" id="minDate" placeholder="Enter Min Long Date">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="maxDate">Max Long Date </label>
+                    <input type="text" class="form-control fullname" id="maxDate" placeholder="Enter Max Long Date">
+                </div>
+
+
+                <div class="col-md-4">
+                    <label for="isFocusDate">Is Focusable*</label>
+                    <select id="isFocusDate" class="form-control fullname">
+                        <option value=1>TRUE</option>
+                        <option value=2>FALSE</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Spinner Layout -->
+            <div class="row" style="margin-top: 30px; display: none;" id="spinner">
+                <div class="col-md-6">
+                    <label for="spinnerData">Input Data *</label>
+                    <textarea type="text" class="form-control fullname" id="spinnerData"
+                        placeholder="Enter Key Value array" required></textarea>
+                </div>
+            </div>
+
+            <!-- Button Layout -->
+            <div class="row" style="margin-top: 30px; display: none;" id="buttonlayout">
+                <div class="col-md-12">
+                    <label for="btnRedUrl">Redirect URL *</label>
+                    <input type="text" class="form-control fullname" id="btnRedUrl" placeholder="Enter Redirect URL"
+                        required>
+                </div>
+            </div>
+
+            <!-- WebView Layout -->
+            <div class="row" style="margin-top: 30px; display: none;" id="webviewlayout">
+                <div class="col-md-4">
+                    <label for="webRedUrl">Redirect URL *</label>
+                    <input type="text" class="form-control fullname" id="webRedUrl" placeholder="Enter Redirect URL"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="webUrl">WebView URL *</label>
+                    <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebView URL"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="webContent">WebView Content *</label>
+                    <input type="text" class="form-control fullname" id="webContent" placeholder="Enter WebView Content"
+                        required>
+                </div>
+            </div>
+
+            <button onclick="addComponent()" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+
+            <!-- </form> -->
+            <h2 style="align-items: center;">Input List </h2>
             <div class="row" style="margin-top: 30px" id="cmpList">
 
             </div>
@@ -95,31 +200,93 @@
 </body>
 
 </html>
+
+
 <script>
     var database = firebase.database();
-    var compRef = firebase.database().ref('carousel/');
-
+    var compRef = firebase.database().ref('input/');
 
     function addComponent() {
 
+        console.log("Onclick ");
         var id = compRef.push();
+        var dataString = getViewData();
+        console.log("Id :  " + id + "  Data  : " + dataString);
         id.set({
-            cmpId: parseInt($('#cmpId').val()),
-            webUrl: $('#webUrl').val(),
-            redUrl: $('#redUrl').val(),
-
+            inpId: parseInt($('#inpId').val()),
+            calId: parseInt($('#calId').val()),
+            title: $('#inpTitle').val(),
+            key: $('#inpKey').val(),
+            type: parseInt($('#viewType :selected').val()),
+            data: dataString,
             firebaseId: "" + id.getKey()
 
         });
     }
+
+    function getViewData() {
+        var e = document.getElementById("viewType");
+        var type = e.options[e.selectedIndex].value;
+        var data;
+        switch (type) {
+            case "1":
+                data = {
+                    "inpType": parseInt($('#inpType :selected').val()),
+                    "length": parseInt($('#length').val()),
+                    "isFocus": parseInt($('#isFocus :selected').val()),
+                    "regex": $('#regex').val()
+                };
+                return JSON.stringify(data);
+            case "2":
+                data = {
+                    "min": $('#minDate').val(),
+                    "max": $('#maxDate').val(),
+                    "isFocus": parseInt($('#isFocusDate :selected').val())
+                };
+                return JSON.stringify(data);
+
+            case "3":
+                data = $('#spinnerData').val()
+                return JSON.stringify(data);
+            case "4":
+                data = {
+                    "inpType": parseInt($('#inpType :selected').val()),
+                    "length": parseInt($('#length').val()),
+                    "isFocus": parseInt($('#isFocus :selected').val()),
+                    "regex": $('#regex').val(),
+                    "data": $('#spinnerEditTextData').val()
+                };
+                return JSON.stringify(data);
+            case "5":
+                data = {
+                    "redUrl": $('#btnRedUrl').val()
+                };
+                return JSON.stringify(data);
+            case "6":
+                data = {
+                    "redUrl": $('#webRedUrl').val(),
+                    "webUrl": $('#webUrl').val(),
+                    "content": $('#webContent').val()
+                };
+                return JSON.stringify(data);
+            default:
+                return "";
+        }
+
+
+    }
 </script>
 
+
+<!-- show list of input in table format -->
 <script>
     var database = firebase.database();
-    var compRef = firebase.database().ref('carousel');
+    var compRef = firebase.database().ref('input');
 
 
     function getComponentList() {
+
+
         const myNode = document.getElementById("cmpList");
         myNode.innerHTML = '';
         var tbl = document.createElement("table");
@@ -127,11 +294,17 @@
         var tr = tbl.insertRow();
 
         var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Carousel Id "));
+        th.appendChild(document.createTextNode("Calculator Id "));
         var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Redirect URL "));
+        th.appendChild(document.createTextNode("Data "));
         var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Web Url"));
+        th.appendChild(document.createTextNode("Input ID "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Key"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("title"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("View Type"));
 
         compRef.on('value', (snapshot) => {
 
@@ -142,8 +315,15 @@
                 stateSnapshot.forEach((jobSnapshot) => {
 
                     if (jobSnapshot.key != "firebaseId") {
+
                         var td = tr.insertCell();
-                        td.appendChild(document.createTextNode(jobSnapshot.val()));
+                        if (jobSnapshot.key == "type") {
+                            td.appendChild(document.createTextNode(getViewTypeName(jobSnapshot.val())));
+                        } else {
+                            td.appendChild(document.createTextNode(jobSnapshot.val()));
+                        }
+
+
                     }
                     //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
                 });
@@ -153,18 +333,64 @@
 
     }
 </script>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-        border-collapse: collapse;
+
+<!-- show defferent layout on spinner select -->
+<script>
+    function hideShowComponent(select) {
+        var edittext = document.getElementById("edittext");
+        edittext.style.display = "none";
+
+        var spinner = document.getElementById("spinner");
+        spinner.style.display = "none";
+
+        var datelayout = document.getElementById("datelayout");
+        datelayout.style.display = "none";
+
+        var webviewlayout = document.getElementById("webviewlayout");
+        webviewlayout.style.display = "none";
+
+        var buttonlayout = document.getElementById("buttonlayout");
+        buttonlayout.style.display = "none";
+
+
+        switch (select.value) {
+            case "1":
+                console.log(select.value);
+                edittext.style.display = "flex";
+                break;
+            case "2":
+                console.log(select.value);
+                datelayout.style.display = "flex";
+                break;
+
+            case "3":
+                console.log(select.value);
+                spinner.style.display = "flex";
+                break;
+            case "4":
+                console.log(select.value);
+                edittext.style.display = "flex";
+                break;
+            case "5":
+                console.log(select.value);
+                buttonlayout.style.display = "flex";
+                break;
+            case "6":
+                console.log(select.value);
+                webviewlayout.style.display = "flex";
+                break;
+            case "7":
+                console.log(select.value);
+                break;
+        }
     }
-    
-    th,
-    td {
-        padding: 5px;
-    }
-</style>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</script>
+
+<script src="js/mapping.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>

@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -41,34 +43,46 @@
 
             <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
 
-            <form id="dashBoardForm" onsubmit="addComponent();">
+            <form id="dashBoardForm" onsubmit="addInputComponent();">
                 <div class="row" style="margin-top: 30px">
                     <div class="col-md-2">
                         <label for="calId">Calculator Id*</label>
-                        <input type="text" class="form-control fullname" id="calId" placeholder="Enter Calculator Id" required>
+                        <input type="text" class="form-control fullname" id="calId" placeholder="Enter Calculator Id"
+                            required>
                     </div>
 
                     <div class="col-md-2">
                         <label for="calName">Calculator Name*</label>
-                        <input type="text" class="form-control fullname" id="calName" placeholder="Calculator Name" required>
+                        <input type="text" class="form-control fullname" id="calName" placeholder="Calculator Name"
+                            required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="redUrl">Redirect Url*</label>
-                        <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url" required>
+                        <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url"
+                            required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="iconUrl">Calculator Icon URL</label>
-                        <input type="text" class="form-control fullname" id="iconUrl" placeholder="Enter Calculator Icon URL">
+                        <input type="text" class="form-control fullname" id="iconUrl"
+                            placeholder="Enter Calculator Icon URL">
                     </div>
 
                 </div>
 
 
-                <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+                <button type="submit" class="btn btn-primary"
+                    style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             </form>
+            <button onclick="getInputList()" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get Input List</button>
+
+
+            <div class="row" style="margin-top: 30px" id="inputList">
+
+            </div>
             <h2 style="align-items: center;">Calculator List </h2>
             <div class="row" style="margin-top: 30px" id="cmpList">
 
@@ -144,18 +158,132 @@
 
     }
 </script>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-        border-collapse: collapse;
+
+
+<!-- show list of input in table format -->
+<script>
+    var database = firebase.database();
+    var inputRef = firebase.database().ref('input');
+
+    var selectedInput = [];
+
+    function getInputList() {
+
+        var calId = $('#calId').val();
+        const inputNode = document.getElementById("inputList");
+        inputNode.innerHTML = '';
+        selectedInput = [];
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        var tr = tbl.insertRow();
+
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Calculator Id "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Data "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Input ID "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Key"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("title"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("View Type"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Select"));
+
+        inputRef.on('value', (snapshot) => {
+
+            snapshot.forEach((stateSnapshot) => {
+
+                //var temp  =stateSnapshot.val() ;
+                if (stateSnapshot.val().calId == calId) {
+
+                    var tr = tbl.insertRow();
+
+                    stateSnapshot.forEach((jobSnapshot) => {
+
+                        if ((jobSnapshot.key != "firebaseId")) {
+
+                            var td = tr.insertCell();
+                            if (jobSnapshot.key == "type") {
+                                td.appendChild(document.createTextNode(getViewTypeName(jobSnapshot.val())));
+                            } else {
+                                td.appendChild(document.createTextNode(jobSnapshot.val()));
+                            }
+
+
+                        }
+                        //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
+                    });
+
+                    console.log(stateSnapshot.key + " : " + stateSnapshot.val().firebaseId);
+                    var td = tr.insertCell();
+                    var chk = document.createElement('input');
+                    chk.setAttribute('type', 'checkbox');
+                    chk.setAttribute('value', 'yes');
+                    chk.setAttribute('id', 'chk');
+                    chk.addEventListener('change', function () {
+                        if (this.checked) {
+                            addInput(stateSnapshot);
+                        } else {
+                            removeInput(stateSnapshot);
+                        }
+                    });
+                    td.appendChild(chk);
+
+
+                }
+
+            });
+        });
+        $('#inputList').append(tbl);
+
     }
-    
-    th,
-    td {
-        padding: 5px;
+
+
+    function addInput(stateSnapshot) {
+        selectedInput.push(stateSnapshot.val());
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + "Checked");
+        console.log(selectedInput);
+
     }
-</style>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    function removeInput(stateSnapshot) {
+        var filtered = selectedInput.filter(function (obj) {
+            return ((obj.firebaseId != stateSnapshot.child("firebaseId").val()));
+        });
+        selectedInput = filtered;
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + " Un - Checked");
+        console.log(selectedInput);
+    }
+
+    function addInputComponent() {
+
+        var calRef = firebase.database().ref('calculator/');
+        var id = calRef.push();
+        console.log("Firebase Key  :" + id);
+        console.log("Selected component  :" + JSON.stringify(selectedInput));
+        id.set({
+            calId: parseInt($('#calId').val()),
+            calName: $('#calName').val(),
+            iconUrl: $('#iconUrl').val(),
+            redUrl: $('#redUrl').val(),
+            input: JSON.stringify(selectedInput),
+            output: "",
+            firebaseId: "" + id.getKey()
+
+        });
+        console.log("Firebase data pushed successfully");
+    }
+</script>
+
+<script src="js/tablestyle.js"></script>
+
+<script src="js/mapping.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>

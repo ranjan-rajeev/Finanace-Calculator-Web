@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -98,34 +99,9 @@
 
 
 </script>
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
 
-    th,
-    td {
-        padding: 5px;
-    }
-</style>
 
-<script>
-    var map = new Map();
-    var keys = [1, 2, 3, 4, 5, 6, 7];
-    var values = ["Carousel Component", "WebView Component", "Horizontal View Pager", "Header Component",
-        "Grid Recycler", "Space Component", "AdView Component"
-    ];
-    for (var i = 0; i < keys.length; i++) {
-        map.set(keys[i], values[i]);
-    }
-
-    function getComponentTypeName(cmpType) {
-        return map.get(cmpType);
-    }
-</script>
+<script src="js/mapping.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
