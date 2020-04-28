@@ -57,20 +57,20 @@
 
     function getComponentList() {
 
+        const myNode = document.getElementById("cmpList");
+        myNode.innerHTML = '';
         var tbl = document.createElement("table");
         tbl.style.width = "100%";
         var tr = tbl.insertRow();
 
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Component Data "));
         var th = tr.insertCell();
         th.appendChild(document.createTextNode("Component Id "));
         var th = tr.insertCell();
         th.appendChild(document.createTextNode("Component Position "));
         var th = tr.insertCell();
         th.appendChild(document.createTextNode("Component Type "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Component Data "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Action"));
 
         compRef.on('value', (snapshot) => {
 

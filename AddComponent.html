@@ -39,11 +39,9 @@
         <div class="container">
             <h2 style="align-items: center;">Add Components</h2>
 
-
-
             <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
 
-            <form id="dashBoardForm" onsubmit="addComponent();">
+            <form id="dashBoardForm" onsubmit="addComponent()">
                 <div class="row" style="margin-top: 30px">
                     <div class="col-md-4">
                         <label for="cmpId">Component Id*</label>
@@ -78,19 +76,13 @@
 
 
                 <div class="row" style="margin-top: 30px" id="cmpList">
-                    <label for="dynamicSelect" id="selectedComp">Select Component Data*</label>
+                    <!-- <label for="dynamicSelect" id="selectedComp">Select Component Data*</label> -->
 
                 </div>
 
 
 
-
-
-
-
-
-                <button type="submit" class="btn btn-primary"
-                    style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+                <button class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             </form>
         </div>
@@ -98,27 +90,28 @@
 </body>
 
 </html>
+
+
 <script>
     var database = firebase.database();
     var compRef = firebase.database().ref('components/');
-
-
+    
     function addComponent() {
+        console.log("Submit clicked");
+        var e = document.getElementById("cmpType");
+        var value = e.options[e.selectedIndex].value;
+        switch (value) {
+            case "1":
+                addCarousalComponent();
+                break;
+        }
 
-        var id = compRef.push();
-        id.set({
-
-            cmpId: $('#cmpId').val(),
-            cmpPos: parseInt($('#cmpPos').val()),
-            cmpType: parseInt($('#cmpType :selected').val()),
-            firebaseId: "" + id.getKey()
-
-        });
     }
 
 
 </script>
 
+ <!-- show defferent layout on spinner select -->
 <script>
     function hideShowComponent(select) {
         switch (select.value) {
@@ -129,27 +122,20 @@
         }
     }
 
-    function addCarouselView() {
-
-        var daySelect = document.getElementById('dynamicSelect');
-        daySelect.options[daySelect.options.length] = new Option('Text 1', 'Value1');
-    }
-
-
-
 </script>
 
-
+<!-- carousal script -->
 <script>
     var database = firebase.database();
     var compRef = firebase.database().ref('carousel');
 
     var selectedList = [];
-    var selectedItem = {};
-
 
     function getCarouselList() {
 
+        const myNode = document.getElementById("cmpList");
+        myNode.innerHTML = '';
+        selectedList = [];
         var tbl = document.createElement("table");
         tbl.style.width = "100%";
         var tr = tbl.insertRow();
@@ -185,18 +171,20 @@
                 chk.setAttribute('id', 'chk');
                 chk.addEventListener('change', function () {
                     if (this.checked) {
-                        selectedList.push(stateSnapshot.child("cmpId").val());
-                        console.log(stateSnapshot.child("cmpId").val() + " : " + "Checked");
-                        console.log(selectedList);
-                        document.getElementById('selectedComp').label  =selectedList
+                        addCarousel(stateSnapshot);
+                        // selectedList.push(stateSnapshot.child("cmpId").val());
+                        // console.log(stateSnapshot.child("cmpId").val() + " : " + "Checked");
+                        // console.log(selectedList);
+                        // document.getElementById('selectedComp').label = selectedList
                     } else {
-                        const index = selectedList.indexOf(stateSnapshot.child("cmpId").val());
-                        if (index > -1) {
-                            selectedList.splice(index, 1);
-                        }
-                        document.getElementById('selectedComp').setAttribute('label',selectedList)
-                        console.log(stateSnapshot.child("cmpId").val() + " : " + " Un - Checked");
-                        console.log(selectedList);
+                        removeCarousel(stateSnapshot);
+                        // const index = selectedList.indexOf(stateSnapshot.child("cmpId").val());
+                        // if (index > -1) {
+                        //     selectedList.splice(index, 1);
+                        // }
+                        // document.getElementById('selectedComp').setAttribute('label', selectedList)
+                        // console.log(stateSnapshot.child("cmpId").val() + " : " + " Un - Checked");
+                        // console.log(selectedList);
                     }
                 });
                 td.appendChild(chk);
@@ -206,7 +194,52 @@
         $('#cmpList').append(tbl);
 
     }
+
+    function addCarousel(stateSnapshot) {
+        var obj = {
+            "redUrl": stateSnapshot.child("redUrl").val(),
+            "webUrl": stateSnapshot.child("webUrl").val()
+        };
+        selectedList.push(obj);
+        console.log(stateSnapshot.child("cmpId").val() + " : " + "Checked");
+        console.log(selectedList);
+
+    }
+
+    function removeCarousel(stateSnapshot) {
+        var filtered = selectedList.filter(function (obj) {
+            return ((obj.redUrl != stateSnapshot.child("redUrl").val()) &&
+                (obj.webUrl != stateSnapshot.child("webUrl").val()));
+        });
+        // const index = selectedList.indexOf(stateSnapshot.child("cmpId").val());
+        // if (index > -1) {
+        //     selectedList.splice(index, 1);
+        // }
+        selectedList = filtered;
+        console.log(stateSnapshot.child("cmpId").val() + " : " + " Un - Checked");
+        console.log(selectedList);
+    }
+
+    function addCarousalComponent() {
+        var compRef = firebase.database().ref('components/');
+        console.log("Submit clicked");
+        var id = compRef.push();
+        console.log("Firebase Key  :" + id);
+        console.log("Selected component  :" + JSON.stringify(selectedList));
+        id.set({
+            cmpId: $('#cmpId').val(),
+            cmpPos: parseInt($('#cmpPos').val()),
+            cmpType: parseInt($('#cmpType :selected').val()),
+            cmpData: JSON.stringify(selectedList),
+            firebaseId: "" + id.getKey()
+        });
+        console.log("Firebase data pushed successfully");
+    }
+
 </script>
+
+
+<!-- table style script -->
 <style>
     table,
     th,
