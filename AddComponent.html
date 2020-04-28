@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Finanace Calculator</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCucS1QK2hwle0_EFSERmvUHBM2aaQ3rIc",
+            authDomain: "finance-calculator-d5c33.firebaseapp.com",
+            databaseURL: "https://finance-calculator-d5c33.firebaseio.com",
+            projectId: "finance-calculator-d5c33",
+            storageBucket: "finance-calculator-d5c33.appspot.com",
+            messagingSenderId: "463292274886",
+            appId: "1:463292274886:web:e2d950145f41c813fc1fc7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="container">
+            <h2 style="align-items: center;">Add Components</h2>
+
+
+
+            <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
+
+            <form id="dashBoardForm" onsubmit="addComponent();">
+                <div class="row" style="margin-top: 30px">
+                    <div class="col-md-4">
+                        <label for="cmpId">Component Id*</label>
+                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter Component Id"
+                            required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="cmpPos">Component Position*</label>
+                        <input type="text" class="form-control fullname" id="cmpPos"
+                            placeholder="Enter Component Position" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="cmpType">Component Type*</label>
+
+                        <select id="cmpType" class="form-control fullname" onchange="hideShowComponent(this)">
+                            <option value=1>Select Component Type</option>
+                            <option value=1>Carousel Component</option>
+                            <option value=2>WebView Component</option>
+                            <option value=3>Horizontal View Pager</option>
+                            <option value=4>Header Component</option>
+                            <option value=5>Grid Recycler</option>
+                            <option value=6>Space Component</option>
+                            <option value=7>AdView Component</option>
+
+                        </select>
+
+                    </div>
+                </div>
+
+
+
+                <div class="row" style="margin-top: 30px" id="cmpList">
+                    <label for="dynamicSelect" id="selectedComp">Select Component Data*</label>
+
+                </div>
+
+
+
+
+
+
+
+
+                <button type="submit" class="btn btn-primary"
+                    style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    var database = firebase.database();
+    var compRef = firebase.database().ref('components/');
+
+
+    function addComponent() {
+
+        var id = compRef.push();
+        id.set({
+
+            cmpId: $('#cmpId').val(),
+            cmpPos: parseInt($('#cmpPos').val()),
+            cmpType: parseInt($('#cmpType :selected').val()),
+            firebaseId: "" + id.getKey()
+
+        });
+    }
+
+
+</script>
+
+<script>
+    function hideShowComponent(select) {
+        switch (select.value) {
+            case "1":
+                console.log(select.value);
+                getCarouselList();
+                break;
+        }
+    }
+
+    function addCarouselView() {
+
+        var daySelect = document.getElementById('dynamicSelect');
+        daySelect.options[daySelect.options.length] = new Option('Text 1', 'Value1');
+    }
+
+
+
+</script>
+
+
+<script>
+    var database = firebase.database();
+    var compRef = firebase.database().ref('carousel');
+
+    var selectedList = [];
+    var selectedItem = {};
+
+
+    function getCarouselList() {
+
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        var tr = tbl.insertRow();
+
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Carousel Id "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Redirect URL "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Web Url"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Select"));
+
+        compRef.on('value', (snapshot) => {
+
+            snapshot.forEach((stateSnapshot) => {
+                //console.log(stateSnapshot.key); // 'pending', etc
+                var tr = tbl.insertRow();
+
+                stateSnapshot.forEach((jobSnapshot) => {
+
+                    if (jobSnapshot.key != "firebaseId") {
+                        var td = tr.insertCell();
+                        td.appendChild(document.createTextNode(jobSnapshot.val()));
+                    }
+                    //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
+                });
+                console.log(stateSnapshot.key + " : " + stateSnapshot.child("cmpId").val());
+                var td = tr.insertCell();
+                var chk = document.createElement('input');
+                chk.setAttribute('type', 'checkbox');
+                chk.setAttribute('value', 'yes');
+                chk.setAttribute('id', 'chk');
+                chk.addEventListener('change', function () {
+                    if (this.checked) {
+                        selectedList.push(stateSnapshot.child("cmpId").val());
+                        console.log(stateSnapshot.child("cmpId").val() + " : " + "Checked");
+                        console.log(selectedList);
+                        document.getElementById('selectedComp').label  =selectedList
+                    } else {
+                        const index = selectedList.indexOf(stateSnapshot.child("cmpId").val());
+                        if (index > -1) {
+                            selectedList.splice(index, 1);
+                        }
+                        document.getElementById('selectedComp').setAttribute('label',selectedList)
+                        console.log(stateSnapshot.child("cmpId").val() + " : " + " Un - Checked");
+                        console.log(selectedList);
+                    }
+                });
+                td.appendChild(chk);
+            });
+        });
+        console.log(selectedList);
+        $('#cmpList').append(tbl);
+
+    }
+</script>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 5px;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>

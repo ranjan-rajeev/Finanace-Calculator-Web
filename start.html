@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Finanace Calculator</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCucS1QK2hwle0_EFSERmvUHBM2aaQ3rIc",
+            authDomain: "finance-calculator-d5c33.firebaseapp.com",
+            databaseURL: "https://finance-calculator-d5c33.firebaseio.com",
+            projectId: "finance-calculator-d5c33",
+            storageBucket: "finance-calculator-d5c33.appspot.com",
+            messagingSenderId: "463292274886",
+            appId: "1:463292274886:web:e2d950145f41c813fc1fc7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="container">
+            <h2>Question Form</h2>
+            <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
+            <form id="contactForm" onsubmit="add_question();">
+
+                <div class="row" id="question_id">
+                    <div class="col-md-6">
+                        <label for="quesString">Question*</label>
+                        <textarea class="form-control message" id="quesString" placeholder="Enter Question" cols="5"
+                            rows="3" required></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="ansExplanation">Answer Explanation</label>
+                        <textarea class="form-control fullname" id="ansExplanation"
+                            placeholder="Enter Answer Explanation" cols="5" rows="3"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="optionA">Option A*</label>
+                        <input type="text" class="form-control fullname" id="optionA" placeholder="Enter Option A"
+                            required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="optionB">Option B*</label>
+                        <input type="text" class="form-control fullname" id="optionB" placeholder="Enter Option B"
+                            required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="optionC">Option C</label>
+                        <input type="text" class="form-control fullname" id="optionC" placeholder="Enter Option C">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="optionD">Option D</label>
+                        <input type="text" class="form-control fullname" id="optionD" placeholder="Enter Option D">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="optionE">Option E</label>
+                        <input type="text" class="form-control fullname" id="optionE" placeholder="Enter Option E">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="optionF">Option F</label>
+                        <input type="text" class="form-control fullname" id="optionF" placeholder="Enter Option F">
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="margin-top: 30px">
+                    <div class="col-md-4">
+                        <label for="quesId">Question Id*</label>
+                        <input type="text" class="form-control fullname" id="quesId" placeholder="Enter Question Id"
+                            required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="correctAns">Correct Answer*</label>
+
+                        <select id="correctAns" class="form-control fullname">
+                            <option value=0>Option A</option>
+                            <option value=1>Option B</option>
+                            <option value=2>Option C</option>
+                            <option value=3>Option D</option>
+                            <option value=4>Option E</option>
+                            <option value=5>Option F</option>
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="questionUrl">Question URL</label>
+                        <input type="text" class="form-control fullname" id="questionUrl"
+                            placeholder="Enter Question URL">
+                    </div>
+
+                </div>
+
+
+
+
+
+
+                <div class="row" style="margin-top: 30px">
+                    <div class="col-md-2">
+                        <label for="diffLevel">Difficulty Level*</label>
+                        <select id="diffLevel" class="form-control fullname">
+                            <option value=1>EASY</option>
+                            <option value=2>MEDIUM</option>
+                            <option value=3>DIFFICULT</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="relatedExam">Related Exams*</label>
+                        <select id="relatedExam" class="form-control fullname">
+                            <option value=1>SSC CGL</option>
+                            <option value=2>BANK PO</option>
+                            <option value=3>GATE</option>
+                            <option value=999>NA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="selectSubject">Related Subject*</label>
+                        <select id="selectSubject" class="form-control fullname">
+                            <option value=1>Math</option>
+                            <option value=2>Reasoning</option>
+                            <option value=3>English</option>
+                            <option value=999>NA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="selectTopic">Related Topic</label>
+                        <input type="text" class="form-control fullname" id="selectTopic" placeholder="Enter topic">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="quesLang">Question Language*</label>
+                        <select id="quesLang" class="form-control fullname">
+                            <option value=1>ENGLISH</option>
+                            <option value=2>HINDI</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="expTime">Expected Solve Time</label>
+                        <select id="expTime" class="form-control fullname" onselect="answerTypeSelector(this);">
+                            <option value=1>1 Min</option>
+                            <option value=2>2 Min</option>
+                            <option value=5>5 Min</option>
+                            <option value=999>NA</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary"
+                    style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+
+    <script>
+        var database = firebase.database();
+
+        function add_question() {
+
+            var options = [];
+
+
+            if ($('#optionA').val() != "") {
+                options.push($('#optionA').val());
+            }
+            if ($('#optionB').val() != "") {
+                options.push($('#optionB').val());
+            }
+            if ($('#optionC').val() != "") {
+                options.push($('#optionC').val());
+            }
+            if ($('#optionD').val() != "") {
+                options.push($('#optionD').val());
+            }
+            if ($('#optionE').val() != "") {
+                options.push($('#optionE').val());
+            }
+            if ($('#optionF').val() != "") {
+                options.push($('#optionF').val());
+            }
+            console.log(options);
+
+            var messagesRef = firebase.database().ref('testdata/');
+            var id = messagesRef.push();
+
+            id.set({
+
+                quesString: $('#quesString').val(),
+                ansExplanation: $('#ansExplanation').val(),
+                option: options,
+                quesId: parseInt($('#quesId').val()),
+                correctAns: parseInt($('#correctAns :selected').val()),
+                questionUrl: $('#questionUrl').val(),
+
+                diffLevel: parseInt($('#diffLevel :selected').val()),
+                relatedExam: parseInt($('#relatedExam :selected').val()),
+                selectSubject: parseInt($('#selectSubject :selected').val()),
+                selectTopic: $('#selectTopic').val(),
+                quesLang: parseInt($('#quesLang :selected').val()),
+                expTime: parseInt($('#expTime :selected').val()),
+
+                firebaseId: "" + id.getKey()
+
+            });
+            console.log('User Inserted');
+        }
+
+    </script>
+
+    <script>
+
+
+        function getUserInput() {
+            if ($('#isUserInputRequired :selected').val() == 'true')
+                return true;
+            else
+                return false;
+        }
+
+        function answerTypeSelector(element) {
+
+            alert('welcome');
+            if ($('#quesId').val() != "") {
+                $("#question_id").show();
+            } else {
+                $("#question_id").hide();
+            }
+        }
+
+
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
