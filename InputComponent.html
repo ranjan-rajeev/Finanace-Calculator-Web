@@ -8,8 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -35,7 +34,7 @@
 
 </head>
 
-<body onload="getComponentList()">
+<body onload="onPageLoad()">
     <div class="row">
         <div class="container">
             <h2 style="align-items: center;">Add Input</h2>
@@ -53,34 +52,27 @@
                 </div>
 
                 <div class="col-md-2">
-                    <label for="calId">Calculator Id*</label>
-                    <input type="text" class="form-control fullname" id="calId" placeholder="Calculator Id" required>
+                    <label for="calculatorId">Select Calculator</label>
+                    <select id="calculatorId" class="form-control fullname" onchange="refreshInputOutput()">
+                    </select>
                 </div>
 
 
                 <div class="col-md-2">
                     <label for="inpTitle">Input Title *</label>
-                    <input type="text" class="form-control fullname" id="inpTitle" placeholder="Enter Input Title"
-                        required>
+                    <input type="text" class="form-control fullname" id="inpTitle" placeholder="Enter Input Title" required>
                 </div>
 
                 <div class="col-md-3">
                     <label for="inpKey">Input key *</label>
-                    <input type="text" class="form-control fullname" id="inpKey" placeholder="Enter Input key (a -z) "
-                        required>
+                    <input type="text" class="form-control fullname" id="inpKey" placeholder="Enter Input key (a -z) " required>
                 </div>
                 <div class="col-md-3">
                     <label for="viewType">Input View Type*</label>
 
                     <select id="viewType" class="form-control fullname" onchange="hideShowComponent(this)">
                         <option value=0>Select View Type</option>
-                        <option value=1>EditText</option>
-                        <option value=2>Date</option>
-                        <option value=3>Spinner</option>
-                        <option value=4>Spinner With EditText</option>
-                        <option value=5>Button</option>
-                        <option value=6>WebView</option>
-                        <option value=7>Header Text</option>
+                    
                     </select>
 
                 </div>
@@ -92,16 +84,13 @@
                 <div class="col-md-3">
                     <label for="inpType">Input Type *</label>
                     <select id="inpType" class="form-control fullname">
-                        <option value=1>Number</option>
-                        <option value=2>Decimal Number</option>
-                        <option value=3>Text</option>
+
                     </select>
                 </div>
 
                 <div class="col-md-3">
                     <label for="length"> Maximum Length*</label>
-                    <input type="text" class="form-control fullname" id="length" placeholder="Enter max length"
-                        required>
+                    <input type="text" class="form-control fullname" id="length" placeholder="Enter max length" required>
                 </div>
 
                 <div class="col-md-2">
@@ -113,14 +102,12 @@
                 </div>
                 <div class="col-md-4">
                     <label for="regex">Input Regex*</label>
-                    <input type="text" class="form-control fullname" id="regex" placeholder="Enter Input Regex"
-                        required>
+                    <input type="text" class="form-control fullname" id="regex" placeholder="Enter Input Regex" required>
                 </div>
 
                 <div class="col-md-6">
                     <label for="spinnerEditTextData">Input Data</label>
-                    <textarea type="text" class="form-control fullname" id="spinnerEditTextData"
-                        placeholder="Enter Key Value array"></textarea>
+                    <textarea type="text" class="form-control fullname" id="spinnerEditTextData" placeholder="Enter Key Value array"></textarea>
                 </div>
             </div>
 
@@ -152,8 +139,7 @@
             <div class="row" style="margin-top: 30px; display: none;" id="spinner">
                 <div class="col-md-6">
                     <label for="spinnerData">Input Data *</label>
-                    <textarea type="text" class="form-control fullname" id="spinnerData"
-                        placeholder="Enter Key Value array" required></textarea>
+                    <textarea type="text" class="form-control fullname" id="spinnerData" placeholder="Enter Key Value array" required></textarea>
                 </div>
             </div>
 
@@ -161,8 +147,7 @@
             <div class="row" style="margin-top: 30px; display: none;" id="buttonlayout">
                 <div class="col-md-12">
                     <label for="btnRedUrl">Redirect URL *</label>
-                    <input type="text" class="form-control fullname" id="btnRedUrl" placeholder="Enter Redirect URL"
-                        required>
+                    <input type="text" class="form-control fullname" id="btnRedUrl" placeholder="Enter Redirect URL" required>
                 </div>
             </div>
 
@@ -170,32 +155,35 @@
             <div class="row" style="margin-top: 30px; display: none;" id="webviewlayout">
                 <div class="col-md-4">
                     <label for="webRedUrl">Redirect URL *</label>
-                    <input type="text" class="form-control fullname" id="webRedUrl" placeholder="Enter Redirect URL"
-                        required>
+                    <input type="text" class="form-control fullname" id="webRedUrl" placeholder="Enter Redirect URL" required>
                 </div>
 
                 <div class="col-md-4">
                     <label for="webUrl">WebView URL *</label>
-                    <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebView URL"
-                        required>
+                    <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebView URL" required>
                 </div>
 
                 <div class="col-md-4">
                     <label for="webContent">WebView Content *</label>
-                    <input type="text" class="form-control fullname" id="webContent" placeholder="Enter WebView Content"
-                        required>
+                    <input type="text" class="form-control fullname" id="webContent" placeholder="Enter WebView Content" required>
                 </div>
             </div>
 
-            <button onclick="addComponent()" class="btn btn-primary"
-                style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+            <button onclick="addComponent()" class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             <!-- </form> -->
+
             <h2 style="align-items: center;">Input List </h2>
             <div class="row" style="margin-top: 30px" id="cmpList">
 
             </div>
+            <h2 style="align-items: center;">Output List </h2>
+            <div class="row" style="margin-top: 30px" id="outList">
+
+            </div>
+
         </div>
+    </div>
     </div>
 </body>
 
@@ -214,7 +202,7 @@
         console.log("Id :  " + id + "  Data  : " + dataString);
         id.set({
             inpId: parseInt($('#inpId').val()),
-            calId: parseInt($('#calId').val()),
+            calId: parseInt($('#calculatorId :selected').val()),
             title: $('#inpTitle').val(),
             key: $('#inpKey').val(),
             type: parseInt($('#viewType :selected').val()),
@@ -283,6 +271,12 @@
     var database = firebase.database();
     var compRef = firebase.database().ref('input');
 
+    function onPageLoad() {
+        bindetTypeList('inpType');
+        bindCalculatorList('calculatorId');
+        bindViewTypeList('viewType');
+        refreshInputOutput();
+    }
 
     function getComponentList() {
 
@@ -330,6 +324,107 @@
             });
         });
         $('#cmpList').append(tbl);
+
+    }
+
+    function refreshInputOutput() {
+        getInputList();
+        getOutputList();
+    }
+    var database = firebase.database();
+
+
+    function getInputList() {
+        var inputRef = firebase.database().ref('input');
+        var calId = $('#calculatorId').val();
+        const myNode = document.getElementById("cmpList");
+        myNode.innerHTML = '';
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        var tr = tbl.insertRow();
+
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Calculator Id "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Data "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Input ID "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Key"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("title"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("View Type"));
+
+        inputRef.on('value', (snapshot) => {
+
+            snapshot.forEach((stateSnapshot) => {
+                //console.log("Snapshot - " + stateSnapshot.val().calId + "  calId - " + calId); // 'pending', etc
+                if (stateSnapshot.val().calId == calId) {
+                    var tr = tbl.insertRow();
+                    stateSnapshot.forEach((jobSnapshot) => {
+                        if (jobSnapshot.key != "firebaseId") {
+
+                            var td = tr.insertCell();
+                            if (jobSnapshot.key == "type") {
+                                td.appendChild(document.createTextNode(getViewTypeName(jobSnapshot.val())));
+                            } else {
+                                td.appendChild(document.createTextNode(jobSnapshot.val()));
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+        $('#cmpList').append(tbl);
+
+    }
+
+    function getOutputList() {
+        var outputRef = firebase.database().ref('output');
+        var calId = $('#calculatorId').val();
+        const myNode = document.getElementById("outList");
+        myNode.innerHTML = '';
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        var tr = tbl.insertRow();
+
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Calculator Id "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Formulae "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Output ID "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Output Key"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Message"));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Output Type"));
+
+        outputRef.on('value', (snapshot) => {
+
+            snapshot.forEach((stateSnapshot) => {
+                //console.log("Snapshot - " + stateSnapshot.val().calId + "  calId - " + calId); // 'pending', etc
+                if (stateSnapshot.val().calId == calId) {
+                    var tr = tbl.insertRow();
+                    stateSnapshot.forEach((jobSnapshot) => {
+                        if (jobSnapshot.key != "firebaseId") {
+
+                            var td = tr.insertCell();
+                            if (jobSnapshot.key == "type") {
+                                td.appendChild(document.createTextNode(getOutPutTypeName(jobSnapshot.val())));
+                            } else {
+                                td.appendChild(document.createTextNode(jobSnapshot.val()));
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+        $('#outList').append(tbl);
 
     }
 </script>
@@ -384,13 +479,8 @@
                 break;
         }
     }
-
 </script>
 
 <script src="js/mapping.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
