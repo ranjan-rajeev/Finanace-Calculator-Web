@@ -8,8 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -47,21 +46,18 @@
                 <div class="row" style="margin-top: 30px">
                     <div class="col-md-2">
                         <label for="cmpId">WebView Id*</label>
-                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter WebView Id"
-                            required>
+                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter WebView Id" required>
                     </div>
 
 
                     <div class="col-md-5">
                         <label for="redUrl">Redirect Url*</label>
-                        <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url"
-                            required>
+                        <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url" required>
                     </div>
 
                     <div class="col-md-5">
                         <label for="webUrl">WebUrl*</label>
-                        <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebUrl"
-                            required>
+                        <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebUrl" required>
                     </div>
 
                 </div>
@@ -74,8 +70,7 @@
 
 
 
-                <button type="submit" class="btn btn-primary"
-                    style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+                <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             </form>
             <h2 style="align-items: center;">WebView Component List </h2>
@@ -104,8 +99,6 @@
 
         });
     }
-
-
 </script>
 
 <script>
@@ -114,7 +107,8 @@
 
 
     function getComponentList() {
-
+        const myNode = document.getElementById("cmpList");
+        myNode.innerHTML = '';
         var tbl = document.createElement("table");
         tbl.style.width = "100%";
         var tr = tbl.insertRow();
@@ -149,9 +143,5 @@
     }
 </script>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

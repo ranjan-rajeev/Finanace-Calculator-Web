@@ -1,7 +1,9 @@
 var map = new Map();
-var Componentkeys = [1, 2, 3, 4, 5, 6, 7];
-var Componentvalues = ["Carousel Component", "WebView Component", "Horizontal View Pager", "Header Component",
-    "Grid Recycler", "Space Component", "AdView Component"
+var Componentkeys = [1, 2, 3,
+    4, 5, 6, 7
+];
+var Componentvalues = ["Carousel Component", "WebView Component", "Horizontal View Pager",
+    "Header Component", "Calculator List ", "Space Component", "AdView Component"
 ];
 for (var i = 0; i < Componentkeys.length; i++) {
     map.set(Componentkeys[i], Componentvalues[i]);
@@ -9,6 +11,13 @@ for (var i = 0; i < Componentkeys.length; i++) {
 
 function getComponentTypeName(cmpType) {
     return map.get(cmpType);
+}
+
+function bindComponentTypeList(selectId) {
+    var list = document.getElementById(selectId);
+    for (var i in Componentkeys) {
+        list.add(new Option(Componentvalues[i], Componentkeys[i]));
+    }
 }
 
 
