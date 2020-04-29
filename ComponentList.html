@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Finanace Calculator</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCucS1QK2hwle0_EFSERmvUHBM2aaQ3rIc",
+            authDomain: "finance-calculator-d5c33.firebaseapp.com",
+            databaseURL: "https://finance-calculator-d5c33.firebaseio.com",
+            projectId: "finance-calculator-d5c33",
+            storageBucket: "finance-calculator-d5c33.appspot.com",
+            messagingSenderId: "463292274886",
+            appId: "1:463292274886:web:e2d950145f41c813fc1fc7"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+
+</head>
+
+<body onload="getComponentList()">
+    <div class="row">
+        <div class="container">
+            <h2 style="align-items: center;">List Of Components</h2>
+
+            <!-- <div>
+                <button class="btn btn-primary" onclick="getComponentList()"
+                    style="display: block; margin: 0 auto; margin-top: 20px;margin-bottom: 20px;">Refresh  List</button>
+            </div> -->
+
+            <div id="cmpList"></div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    var database = firebase.database();
+    var compRef = firebase.database().ref('components');
+
+
+    function getComponentList() {
+
+        const myNode = document.getElementById("cmpList");
+        myNode.innerHTML = '';
+        var tbl = document.createElement("table");
+        tbl.style.width = "100%";
+        var tr = tbl.insertRow();
+
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Component Data "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Component Id "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Component Position "));
+        var th = tr.insertCell();
+        th.appendChild(document.createTextNode("Component Type "));
+
+        compRef.on('value', (snapshot) => {
+
+            snapshot.forEach((stateSnapshot) => {
+                //console.log(stateSnapshot.key); // 'pending', etc
+                var tr = tbl.insertRow();
+
+                stateSnapshot.forEach((jobSnapshot) => {
+
+                    if (jobSnapshot.key != "firebaseId") {
+                        var td = tr.insertCell();
+                        if (jobSnapshot.key == "cmpType") {
+                            td.appendChild(document.createTextNode(getComponentTypeName(jobSnapshot.val())));
+                        } else {
+                            td.appendChild(document.createTextNode(jobSnapshot.val()));
+                        }
+                    }
+                    //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
+                });
+            });
+        });
+        $('#cmpList').append(tbl);
+
+    }
+
+
+</script>
+
+
+<script src="js/mapping.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
