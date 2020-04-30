@@ -48,13 +48,15 @@ var calKeys = [10, 20, 30,
     40, 50, 60,
     70, 80, 90,
     100, 110, 120,
-    130, 140
+    130, 140,
+    150
 ];
 var calValues = ["EMI Calculator", "Compare Loan", "Flat Vs Reducing Rate",
     "Create Loan Profile", "View Loan Profile", "Home Loan Eligibility",
     "Systematic Investment Plan", "Goal SIP Calculator", "Lumpsum SIP Calculator",
     "FD Calculator", "RD Calculator", "PPF Calculator",
-    "GST Calculator", "VAT Calculator"
+    "GST Calculator", "VAT Calculator",
+    "Add Two Number"
 ];
 
 for (var i = 0; i < calKeys.length; i++) {
