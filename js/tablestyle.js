@@ -1,13 +1,12 @@
-<style>
-    table,
-    th,
-    td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
 
+table,
     th,
     td {
-        padding: 5px;
-    }
-</style>
+    border: 1px solid black;
+    border - collapse: collapse;
+}
+
+th,
+    td {
+    padding: 5px;
+}

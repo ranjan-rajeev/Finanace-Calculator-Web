@@ -3,12 +3,14 @@
 
 <head>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Autocomplete.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -34,45 +36,50 @@
 
 </head>
 
-<body onload="getComponentList()">
+<body>
     <div class="row">
         <div class="container">
-            <h2 style="align-items: center;">Add WebView Component</h2>
+            <h2 style="align-items: center;">Add Web Component</h2>
 
-
-            <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
-
-            <form id="dashBoardForm" onsubmit="addComponent();">
-                <div class="row" style="margin-top: 30px">
-                    <div class="col-md-2">
-                        <label for="cmpId">WebView Id*</label>
-                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter WebView Id" required>
-                    </div>
-
-
-                    <div class="col-md-5">
-                        <label for="redUrl">Redirect Url*</label>
-                        <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url" required>
-                    </div>
-
-                    <div class="col-md-5">
-                        <label for="webUrl">WebUrl*</label>
-                        <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebUrl" required>
-                    </div>
-
-                </div>
-                <div class="row" style="margin-top: 30px">
-                    <div class="col-md-12">
-                        <label for="webHtml">WebView HTML</label>
-                        <textarea type="text" class="form-control fullname" id="webHtml" placeholder="Enter WebView HTML"></textarea>
-                    </div>
+            <!-- <form id="dashBoardForm" onsubmit="addComponent();" autocomplete="off"> -->
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-2">
+                    <label for="cmpId">WebView Id*</label>
+                    <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter WebView Id">
                 </div>
 
 
+                <div class="col-md-4">
+                    <label for="redUrl">Redirect Url*</label>
+                    <input type="text" class="form-control fullname" id="redUrl" placeholder="Enter Redirect Url"
+                        required>
+                </div>
 
-                <button type="submit" class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+                <div class="col-md-4">
+                    <label for="webUrl">WebUrl*</label>
+                    <input type="text" class="form-control fullname" id="webUrl" placeholder="Enter WebUrl">
+                </div>
+                <div class="col-md-2">
+                    <label for="webTitle">WebView Title*</label>
+                    <input type="text" class="form-control fullname" id="webTitle" placeholder="Enter WebUrl" required>
+                </div>
 
-            </form>
+            </div>
+            <div class="row" style="margin-top: 30px">
+                <div class="col-md-12">
+                    <label for="webHtml">WebView HTML</label>
+                    <textarea type="text" class="form-control fullname" id="webHtml"
+                        placeholder="Enter WebView HTML"></textarea>
+                </div>
+            </div>
+
+            <button onclick="addComponent()" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
+
+            <!-- </form> -->
+
+            <button onclick="getComponentList()" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get WebView List</button>
             <h2 style="align-items: center;">WebView Component List </h2>
             <div class="row" style="margin-top: 30px" id="cmpList">
 
@@ -86,18 +93,18 @@
     var database = firebase.database();
     var compRef = firebase.database().ref('webview/');
 
-
     function addComponent() {
-
         var id = compRef.push();
+        console.log("Key  : " + id.getKey());
         id.set({
-            cmpPos: parseInt($('#cmpId').val()),
+            cmpId: parseInt($('#cmpId').val()),
             webUrl: $('#webUrl').val(),
             redUrl: $('#redUrl').val(),
-            webHtml: $('#webHtml').val(),
+            content: $('#webHtml').val(),
+            title: $('#webTitle').val(),
             firebaseId: "" + id.getKey()
-
         });
+        console.log("Firebase data pushed successfully");
     }
 </script>
 
@@ -142,6 +149,15 @@
 
     }
 </script>
+<script src="js/AutoComplete.js"></script>
+<script src="js/mapping.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+    autocomplete(document.getElementById("redUrl"), getActivityList());
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>

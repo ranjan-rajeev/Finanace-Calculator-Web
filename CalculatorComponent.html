@@ -35,7 +35,7 @@
 
 </head>
 
-<body onload="getComponentList()">
+<body onload="onPageLoad()">
     <div class="row">
         <div class="container">
             <h2 style="align-items: center;">Add Calculator</h2>
@@ -43,12 +43,13 @@
 
             <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
 
-            <form id="dashBoardForm" onsubmit="addInputComponent();">
+            <form id="dashBoardForm" autocomplete="off" onsubmit="pushComponentFirebase();">
                 <div class="row" style="margin-top: 30px">
+
                     <div class="col-md-2">
-                        <label for="calId">Calculator Id*</label>
-                        <input type="text" class="form-control fullname" id="calId" placeholder="Enter Calculator Id"
-                            required>
+                        <label for="calculatorId">Select Calculator</label>
+                        <select id="calculatorId" class="form-control fullname" onchange="refreshInputOutput1()">
+                        </select>
                     </div>
 
                     <div class="col-md-2">
@@ -76,14 +77,29 @@
                     style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             </form>
-            <button onclick="getInputList()" class="btn btn-primary"
+            <button onclick="showListWithCheckBox('input','inputList',true)" class="btn btn-primary"
                 style="display: block; margin: 0 auto; margin-top: 20px">Get Input List</button>
-
-
+            <h2 style="align-items: center;">Input List </h2>
             <div class="row" style="margin-top: 30px" id="inputList">
 
             </div>
+
+            <button onclick="showListWithCheckBox('output','outputList',true)" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get Output List</button>
+            <h2 style="align-items: center;">Output List </h2>
+            <div class="row" style="margin-top: 30px" id="outputList">
+
+            </div>
+
+            <button onclick="showListWithCheckBox('calculator','calList',false)" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get Calculator List</button>
+
             <h2 style="align-items: center;">Calculator List </h2>
+            <div class="row" style="margin-top: 30px" id="calList">
+
+            </div>
+
+
             <div class="row" style="margin-top: 30px" id="cmpList">
 
             </div>
@@ -92,7 +108,7 @@
 </body>
 
 </html>
-<script>
+<!-- <script>
     var database = firebase.database();
     var compRef = firebase.database().ref('calculator/');
 
@@ -101,7 +117,7 @@
 
         var id = compRef.push();
         id.set({
-            calId: parseInt($('#calId').val()),
+            calId: parseInt($('#calculatorId :selected').val()),
             calName: $('#calName').val(),
             iconUrl: $('#iconUrl').val(),
             redUrl: $('#redUrl').val(),
@@ -111,145 +127,108 @@
 
         });
     }
-</script>
+</script> -->
 
+
+<!-- common method to add & remove component  -->
 <script>
     var database = firebase.database();
-    var compRef = firebase.database().ref('calculator');
 
+    var selectedInput = [];
+    var selectedOutput = [];
 
-    function getComponentList() {
-        const myNode = document.getElementById("cmpList");
+    function showListWithCheckBox(refName, cmpName, isActionReq, notToShowKeys, headerMapping) {
+
+        var calId = $('#calculatorId :selected').val();
+
+        notToShowKeys = notToShowKeys || ["firebaseId"];
+        headerMapping = headerMapping || {
+            cmpData: "Component Data"
+        };
+        var database = firebase.database();
+        var tempRef = firebase.database().ref(refName);
+
+        const myNode = document.getElementById(cmpName);
         myNode.innerHTML = '';
         var tbl = document.createElement("table");
         tbl.style.width = "100%";
-        var tr = tbl.insertRow();
+        var row = 0;
 
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Id "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode(" Name "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Icon URL "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Input"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Output"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Redirect URL "));
-
-        compRef.on('value', (snapshot) => {
-
-            snapshot.forEach((stateSnapshot) => {
-                //console.log(stateSnapshot.key); // 'pending', etc
-                var tr = tbl.insertRow();
-
-                stateSnapshot.forEach((jobSnapshot) => {
-
-                    if (jobSnapshot.key != "firebaseId") {
-                        var td = tr.insertCell();
-                        td.appendChild(document.createTextNode(jobSnapshot.val()));
-                    }
-                    //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
-                });
-            });
-        });
-        $('#cmpList').append(tbl);
-
-    }
-</script>
-
-
-<!-- show list of input in table format -->
-<script>
-    var database = firebase.database();
-    var inputRef = firebase.database().ref('input');
-
-    var selectedInput = [];
-
-    function getInputList() {
-
-        var calId = $('#calId').val();
-        const inputNode = document.getElementById("inputList");
-        inputNode.innerHTML = '';
-        selectedInput = [];
-        var tbl = document.createElement("table");
-        tbl.style.width = "100%";
-        var tr = tbl.insertRow();
-
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Id "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Data "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Input ID "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Key"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("title"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("View Type"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Select"));
-
-        inputRef.on('value', (snapshot) => {
-
+        tempRef.on('value', (snapshot) => {
             snapshot.forEach((stateSnapshot) => {
 
-                //var temp  =stateSnapshot.val() ;
-                if (stateSnapshot.val().calId == calId) {
-
+                // defining header layout 
+                if (row == 0) {
                     var tr = tbl.insertRow();
-
                     stateSnapshot.forEach((jobSnapshot) => {
-
-                        if ((jobSnapshot.key != "firebaseId")) {
-
+                        if (notToShowKeys.indexOf(jobSnapshot.key) == -1) {
                             var td = tr.insertCell();
-                            if (jobSnapshot.key == "type") {
-                                td.appendChild(document.createTextNode(getViewTypeName(jobSnapshot.val())));
+                            if (headerMapping.hasOwnProperty(jobSnapshot.key)) {
+                                td.appendChild(document.createTextNode(headerMapping[jobSnapshot.key]));
                             } else {
-                                td.appendChild(document.createTextNode(jobSnapshot.val()));
+                                td.appendChild(document.createTextNode(jobSnapshot.key));
                             }
-
-
-                        }
-                        //console.log(jobSnapshot.key + " : " + jobSnapshot.val());
-                    });
-
-                    console.log(stateSnapshot.key + " : " + stateSnapshot.val().firebaseId);
-                    var td = tr.insertCell();
-                    var chk = document.createElement('input');
-                    chk.setAttribute('type', 'checkbox');
-                    chk.setAttribute('value', 'yes');
-                    chk.setAttribute('id', 'chk');
-                    chk.addEventListener('change', function () {
-                        if (this.checked) {
-                            addInput(stateSnapshot);
-                        } else {
-                            removeInput(stateSnapshot);
                         }
                     });
-                    td.appendChild(chk);
 
+                    if (isActionReq) {
+                        var td = tr.insertCell();
+                        td.appendChild(document.createTextNode("Action"));
+                    }
+                    row++;
+                }
+                if (stateSnapshot.val().calId == calId || refName == "calculator") {
+                    //adding table rows
+                    var tr = tbl.insertRow();
+                    stateSnapshot.forEach((jobSnapshot) => {
+                        if (notToShowKeys.indexOf(jobSnapshot.key) == -1) {
+                            var td = tr.insertCell();
+                            td.appendChild(document.createTextNode(jobSnapshot.val()));
+                        }
+                    });
 
+                    if (isActionReq && stateSnapshot.child("firebaseId").val() != null) {
+                        console.log(stateSnapshot.key + " : " + stateSnapshot.child("firebaseId").val());
+                        var td = tr.insertCell();
+                        var chk = document.createElement('input');
+                        chk.setAttribute('type', 'checkbox');
+                        chk.setAttribute('id', 'chk');
+                        chk.addEventListener('change', function () {
+                            if (this.checked) {
+                                if (refName == "input") {
+                                    addSelectedInput(stateSnapshot);
+                                } else {
+                                    addSelectedOutput(stateSnapshot);
+                                }
+
+                            } else {
+                                if (refName == "input") {
+                                    removeSelectedInput(stateSnapshot);
+                                } else {
+                                    removeSelectedOutput(stateSnapshot);
+                                }
+                            }
+                        });
+                        console.log("Row :" + row);
+                        td.appendChild(chk);
+                    }
                 }
 
+
             });
         });
-        $('#inputList').append(tbl);
-
+        // $('#cmpList').append(tbl);
+        $("#" + cmpName).append(tbl);
+        row = 0;
     }
 
-
-    function addInput(stateSnapshot) {
+    function addSelectedInput(stateSnapshot) {
         selectedInput.push(stateSnapshot.val());
         console.log(stateSnapshot.child("firebaseId").val() + " : " + "Checked");
         console.log(selectedInput);
-
     }
 
-    function removeInput(stateSnapshot) {
+    function removeSelectedInput(stateSnapshot) {
         var filtered = selectedInput.filter(function (obj) {
             return ((obj.firebaseId != stateSnapshot.child("firebaseId").val()));
         });
@@ -258,29 +237,55 @@
         console.log(selectedInput);
     }
 
-    function addInputComponent() {
+    function addSelectedOutput(stateSnapshot) {
+        selectedOutput.push(stateSnapshot.val());
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + "Checked");
+        console.log(selectedOutput);
+    }
 
-        var calRef = firebase.database().ref('calculator/');
-        var id = calRef.push();
-        console.log("Firebase Key  :" + id);
+    function removeSelectedOutput(stateSnapshot) {
+        var filtered = selectedOutput.filter(function (obj) {
+            return ((obj.firebaseId != stateSnapshot.child("firebaseId").val()));
+        });
+        selectedOutput = filtered;
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + " Un - Checked");
+        console.log(selectedOutput);
+    }
+
+    function pushComponentFirebase() {
+        var compRef = firebase.database().ref('calculator/');
+        console.log("Submit clicked");
+        var id = compRef.push();
+        console.log("Firebase Key  :" + id.getKey());
         console.log("Selected component  :" + JSON.stringify(selectedInput));
+        console.log("Selected component  :" + JSON.stringify(selectedOutput));
         id.set({
-            calId: parseInt($('#calId').val()),
+            calId: parseInt($('#calculatorId :selected').val()),
             calName: $('#calName').val(),
             iconUrl: $('#iconUrl').val(),
             redUrl: $('#redUrl').val(),
             input: JSON.stringify(selectedInput),
-            output: "",
+            output: JSON.stringify(selectedOutput),
             firebaseId: "" + id.getKey()
-
         });
         console.log("Firebase data pushed successfully");
     }
+
+    function onPageLoad() {
+        bindCalculatorList('calculatorId');
+        //showListWithCheckBox("viewpager", "cmpList", false);
+        //refreshInputOutput();
+    }
 </script>
 
-<script src="js/tablestyle.js"></script>
-
 <script src="js/mapping.js"></script>
+<script src="js/AutoComplete.js"></script>
+
+
+<script>
+    autocomplete(document.getElementById("redUrl"), getActivityList());
+</script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>

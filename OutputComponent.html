@@ -8,7 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -37,22 +38,24 @@
         <div class="container">
             <h2 style="align-items: center;">Add Output</h2>
 
-            <form id="dashBoardForm" onsubmit="addComponent();">
+            <form id="dashBoardForm" onsubmit="pushComponentFirebase();">
 
                 <!-- Main layout -->
                 <div class="row" style="margin-top: 30px">
                     <div class="col-md-2">
                         <label for="outId">Output Id*</label>
-                        <input type="text" class="form-control fullname" id="outId" placeholder="Enter Output Id" required>
+                        <input type="text" class="form-control fullname" id="outId" placeholder="Enter Output Id"
+                            required>
                     </div>
                     <div class="col-md-3">
                         <label for="outKey">Output key *</label>
-                        <input type="text" class="form-control fullname" id="outKey" placeholder="Enter Output key (a -z) " required>
+                        <input type="text" class="form-control fullname" id="outKey"
+                            placeholder="Enter Output key (a -z) " required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="calculatorId">Select Calculator</label>
-                        <select id="calculatorId" class="form-control fullname" onchange="refreshInputOutput()">
+                        <select id="calculatorId" class="form-control fullname">
                         </select>
                     </div>
 
@@ -67,12 +70,14 @@
 
                     <div class="col-md-6">
                         <label for="formulae">Output Formulae *</label>
-                        <textarea type="text" class="form-control fullname" id="formulae" placeholder="Enter Formulae " required></textarea>
+                        <textarea type="text" class="form-control fullname" id="formulae" placeholder="Enter Formulae "
+                            required></textarea>
                     </div>
 
                     <div class="col-md-6">
                         <label for="outMsg">Output message*</label>
-                        <input type="text" class="form-control fullname" id="outMsg" placeholder="Enter Output Id" required>
+                        <input type="text" class="form-control fullname" id="outMsg" placeholder="Enter Output Id"
+                            required>
                     </div>
 
 
@@ -81,14 +86,22 @@
                 <button class="btn btn-primary" style="display: block; margin: 0 auto; margin-top: 20px">Submit</button>
 
             </form>
-            <h2 style="align-items: center;">Output List </h2>
-            <div class="row" style="margin-top: 30px" id="outList">
-
-            </div>
+            <button onclick="showListWithCheckBox('input','inputList',false)" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get Input List</button>
             <h2 style="align-items: center;">Input List </h2>
-            <div class="row" style="margin-top: 30px" id="cmpList">
+
+            <div class="row" style="margin-top: 30px" id="inputList">
+            </div>
+
+
+
+            <button onclick="showListWithCheckBox('output','outputList',false)" class="btn btn-primary"
+                style="display: block; margin: 0 auto; margin-top: 20px">Get Output List</button>
+            <h2 style="align-items: center;">Output List </h2>
+            <div class="row" style="margin-top: 30px" id="outputList">
 
             </div>
+
         </div>
     </div>
 </body>
@@ -116,119 +129,136 @@
         });
         console.log("Data pushed successfully");
     }
+
 </script>
 
 
-<!-- show list of input in table format -->
+<!-- common method to add & remove component  -->
 <script>
-    function onPageLoad() {
-        bindCalculatorList('calculatorId');
-        refreshInputOutput();
-        bindOutputTypeList('outType');
-    }
-
-    function refreshInputOutput() {
-        getInputList();
-        getOutputList();
-    }
     var database = firebase.database();
 
+    var selectedList = [];
 
-    function getInputList() {
-        var inputRef = firebase.database().ref('input');
-        var calId = $('#calculatorId').val();
-        const myNode = document.getElementById("cmpList");
+    function showListWithCheckBox(refName, cmpName, isActionReq, notToShowKeys, headerMapping) {
+
+        var calId = $('#calculatorId :selected').val();
+
+        notToShowKeys = notToShowKeys || ["firebaseId"];
+        headerMapping = headerMapping || {
+            cmpData: "Component Data"
+        };
+        var database = firebase.database();
+        var tempRef = firebase.database().ref(refName);
+
+        const myNode = document.getElementById(cmpName);
         myNode.innerHTML = '';
         var tbl = document.createElement("table");
         tbl.style.width = "100%";
-        var tr = tbl.insertRow();
+        var row = 0;
 
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Id "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Data "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Input ID "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Key"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("title"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("View Type"));
-
-        inputRef.on('value', (snapshot) => {
-
+        tempRef.on('value', (snapshot) => {
             snapshot.forEach((stateSnapshot) => {
-                //console.log("Snapshot - " + stateSnapshot.val().calId + "  calId - " + calId); // 'pending', etc
-                if (stateSnapshot.val().calId == calId) {
+
+                // defining header layout 
+                if (row == 0) {
                     var tr = tbl.insertRow();
                     stateSnapshot.forEach((jobSnapshot) => {
-                        if (jobSnapshot.key != "firebaseId") {
-
+                        if (notToShowKeys.indexOf(jobSnapshot.key) == -1) {
                             var td = tr.insertCell();
-                            if (jobSnapshot.key == "type") {
-                                td.appendChild(document.createTextNode(getViewTypeName(jobSnapshot.val())));
+                            if (headerMapping.hasOwnProperty(jobSnapshot.key)) {
+                                td.appendChild(document.createTextNode(headerMapping[jobSnapshot.key]));
                             } else {
-                                td.appendChild(document.createTextNode(jobSnapshot.val()));
+                                td.appendChild(document.createTextNode(jobSnapshot.key));
                             }
                         }
                     });
+
+                    if (isActionReq) {
+                        var td = tr.insertCell();
+                        td.appendChild(document.createTextNode("Action"));
+                    }
+                    row++;
                 }
 
+                if (stateSnapshot.val().calId == calId) {
+                    //adding table rows
+                    var tr = tbl.insertRow();
+                    stateSnapshot.forEach((jobSnapshot) => {
+                        if (notToShowKeys.indexOf(jobSnapshot.key) == -1) {
+                            var td = tr.insertCell();
+                            td.appendChild(document.createTextNode(jobSnapshot.val()));
+                        }
+                    });
+
+                    if (isActionReq && stateSnapshot.child("firebaseId").val() != null) {
+                        console.log(stateSnapshot.key + " : " + stateSnapshot.child("firebaseId").val());
+                        var td = tr.insertCell();
+                        var chk = document.createElement('input');
+                        chk.setAttribute('type', 'checkbox');
+                        chk.setAttribute('id', 'chk');
+                        chk.addEventListener('change', function () {
+                            if (this.checked) {
+                                addSelectedComponent(stateSnapshot);
+                            } else {
+                                removeSelectedComponent(stateSnapshot);
+                            }
+                        });
+                        console.log("Row :" + row);
+                        td.appendChild(chk);
+                    }
+                }
             });
         });
-        $('#cmpList').append(tbl);
-
+        // $('#cmpList').append(tbl);
+        $("#" + cmpName).append(tbl);
+        row = 0;
     }
 
-    function getOutputList() {
-        var outputRef = firebase.database().ref('output');
-        var calId = $('#calculatorId').val();
-        const myNode = document.getElementById("outList");
-        myNode.innerHTML = '';
-        var tbl = document.createElement("table");
-        tbl.style.width = "100%";
-        var tr = tbl.insertRow();
+    function addSelectedComponent(stateSnapshot) {
+        selectedList.push(stateSnapshot.val());
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + "Checked");
+        console.log(selectedList);
+    }
 
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Calculator Id "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Formulae "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Output ID "));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Output Key"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Message"));
-        var th = tr.insertCell();
-        th.appendChild(document.createTextNode("Output Type"));
-
-        outputRef.on('value', (snapshot) => {
-
-            snapshot.forEach((stateSnapshot) => {
-                //console.log("Snapshot - " + stateSnapshot.val().calId + "  calId - " + calId); // 'pending', etc
-                if (stateSnapshot.val().calId == calId) {
-                    var tr = tbl.insertRow();
-                    stateSnapshot.forEach((jobSnapshot) => {
-                        if (jobSnapshot.key != "firebaseId") {
-
-                            var td = tr.insertCell();
-                            if (jobSnapshot.key == "type") {
-                                td.appendChild(document.createTextNode(getOutPutTypeName(jobSnapshot.val())));
-                            } else {
-                                td.appendChild(document.createTextNode(jobSnapshot.val()));
-                            }
-                        }
-                    });
-                }
-
-            });
+    function removeSelectedComponent(stateSnapshot) {
+        var filtered = selectedList.filter(function (obj) {
+            return ((obj.firebaseId != stateSnapshot.child("firebaseId").val()));
         });
-        $('#outList').append(tbl);
+        selectedList = filtered;
+        console.log(stateSnapshot.child("firebaseId").val() + " : " + " Un - Checked");
+        console.log(selectedList);
+    }
 
+    function pushComponentFirebase() {
+        var compRef = firebase.database().ref('output/');
+        console.log("Submit clicked");
+        var id = compRef.push();
+        console.log("Firebase Key  :" + id.getKey());
+        //console.log("Selected component  :" + JSON.stringify(selectedList));
+        id.set({
+            outId: parseInt($('#outId').val()),
+            outKey: $('#outKey').val(),
+            formulae: $('#formulae').val(),
+            outMsg: $('#outMsg').val(),
+            calId: parseInt($('#calculatorId :selected').val()),
+            type: parseInt($('#outType :selected').val()),
+            firebaseId: "" + id.getKey()
+
+        });
+        console.log("Firebase data pushed successfully");
+    }
+
+    function onPageLoad() {
+        bindCalculatorList('calculatorId');
+        //refreshInputOutput();
+        bindOutputTypeList('outType');
     }
 </script>
 
 <script src="js/mapping.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>

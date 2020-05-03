@@ -23,3 +23,8 @@ th,
 td {
     padding: 5px;
 }
+
+.full-height {
+    height: 100%;
+    width: 100%;
+  }

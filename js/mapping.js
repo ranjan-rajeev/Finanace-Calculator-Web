@@ -49,14 +49,14 @@ var calKeys = [10, 20, 30,
     70, 80, 90,
     100, 110, 120,
     130, 140,
-    150
+    150, 160
 ];
 var calValues = ["EMI Calculator", "Compare Loan", "Flat Vs Reducing Rate",
     "Create Loan Profile", "View Loan Profile", "Home Loan Eligibility",
     "Systematic Investment Plan", "Goal SIP Calculator", "Lumpsum SIP Calculator",
     "FD Calculator", "RD Calculator", "PPF Calculator",
     "GST Calculator", "VAT Calculator",
-    "Add Two Number"
+    "Add Two Number", "Atal Pension Yojna"
 ];
 
 for (var i = 0; i < calKeys.length; i++) {
@@ -112,4 +112,19 @@ function bindetTypeList(selectId) {
     for (var i in etTypeKeys) {
         list.add(new Option(etTypeValues[i], etTypeKeys[i]));
     }
+}
+
+
+var androidActivities = [
+    "WebViewActivity", "GenericCalculatorActivity", "SplashActivity",
+    "MainActivity", "EmiCalculatorActivity", "EmiCompareActivity",
+    "FixedVsReducingActivity", "GstCalculatorActivity", "VatCalculatorActivity",
+    "FDCalculatorActivity", "RDCalculatorActivity", "PPFCalculatotActivity",
+    "SIPCalculatorActivity", "SIPGoalCalculatorActivity", "LumpSumpSipActivity",
+    "SerachHistoryACtivity", "CreateLoanProfileActivity", "ViewLoanProfile",
+    "HomeLoanEligibility"
+];
+
+function getActivityList() {
+    return androidActivities;
 }
