@@ -2,13 +2,15 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="css/headerstyle.css">
     <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Finanace Calculator</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
@@ -37,7 +39,19 @@
 <body onload="onPageLoad()">
     <div class="row">
         <div class="container">
-            <h2 style="align-items: center;">Add Components</h2>
+            <div id='cssmenu'>
+                <ul>
+                    <li ><a href='index.html'>Home</a></li>
+                    <li class='active'><a href='AddComponent.html'>Create Dashboard</a></li>
+                    <li><a href='CarouselComponent.html'>Add Carousal</a></li>
+                    <li><a href='ViewPagerComponent.html'>Add ViewPager</a></li>
+                    <li><a href='WebViewComponent.html'>Add WebView</a></li>
+                    <li><a href='CalculatorComponent.html'>Add Calculator</a></li>
+                    <li><a href='InputComponent.html'>Add Input</a></li>
+                    <li><a href='OutputComponent.html'>Add Output</a></li>
+                </ul>
+            </div>
+            <h2 style="align-items: center;">Add Components To Homepage</h2>
 
             <div class="alert alert-success success-message" style="display:none;">Form submitted successfully.</div>
 
@@ -45,12 +59,14 @@
                 <div class="row" style="margin-top: 30px">
                     <div class="col-md-4">
                         <label for="cmpId">Component Id*</label>
-                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter Component Id" required>
+                        <input type="text" class="form-control fullname" id="cmpId" placeholder="Enter Component Id"
+                            required>
                     </div>
 
                     <div class="col-md-4">
                         <label for="cmpPos">Component Position*</label>
-                        <input type="text" class="form-control fullname" id="cmpPos" placeholder="Enter Component Position" required>
+                        <input type="text" class="form-control fullname" id="cmpPos"
+                            placeholder="Enter Component Position" required>
                     </div>
 
                     <div class="col-md-4">
@@ -67,7 +83,8 @@
                 <div class="row" style="margin-top: 30px; display: none;" id="headerLayout">
                     <div class="col-md-12">
                         <label for="headerTitle">Input Header Title *</label>
-                        <textarea type="text" class="form-control fullname" id="headerTitle" placeholder="Enter Header Title"></textarea>
+                        <textarea type="text" class="form-control fullname" id="headerTitle"
+                            placeholder="Enter Header Title"></textarea>
                     </div>
                 </div>
 
@@ -75,7 +92,8 @@
                 <div class="row" style="margin-top: 30px; display: none;" id="spaceLayout">
                     <div class="col-md-12">
                         <label for="spaceId">Input Space Amount *</label>
-                        <textarea type="text" class="form-control fullname" id="spaceId" placeholder="Enter Space Amount"></textarea>
+                        <textarea type="text" class="form-control fullname" id="spaceId"
+                            placeholder="Enter Space Amount"></textarea>
                     </div>
                 </div>
 
@@ -206,7 +224,7 @@
                     var chk = document.createElement('input');
                     chk.setAttribute('type', 'checkbox');
                     chk.setAttribute('id', 'chk');
-                    chk.addEventListener('change', function() {
+                    chk.addEventListener('change', function () {
                         if (this.checked) {
                             addSelectedComponent(stateSnapshot);
                         } else {
@@ -231,7 +249,7 @@
     }
 
     function removeSelectedComponent(stateSnapshot) {
-        var filtered = selectedList.filter(function(obj) {
+        var filtered = selectedList.filter(function (obj) {
             return ((obj.firebaseId != stateSnapshot.child("firebaseId").val()));
         });
         selectedList = filtered;
@@ -272,5 +290,9 @@
 </script>
 
 <script src="js/mapping.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
