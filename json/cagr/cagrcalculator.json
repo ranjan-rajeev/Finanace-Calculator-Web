@@ -1,6 +1,6 @@
 {
   "calId": 2682,
-  "calName": "CAGR Calculator",
+  "calName": "CAGR\n            Calculator",
   "firebaseId": "-MJLL0g0KjmrwyiABlEo",
   "iconUrl": "https://img.icons8.com/clouds/2x/calculator.png",
   "input": "[]",
@@ -48,6 +48,19 @@
     }
   ],
   "output": "[]",
+  "outputList": [
+    {
+      "calId": "-MJLL0g0KjmrwyiABlEo",
+      "curr": "%",
+      "data": "",
+      "firebaseId": "-MJLMoChWiJYobplFcq-",
+      "formulae": "(((( m / p ) ^ ( 1 / n) ) - 1 ) * 100 )",
+      "outId": 0,
+      "outKey": "r",
+      "outMsg": "CAGR Value is ",
+      "type": 1
+    }
+  ],
   "redUrl": "GenericCalculatorActivity",
   "spinnerHashMap": {},
   "version": 2
