@@ -1,0 +1,54 @@
+{
+  "calId": 2682,
+  "calName": "CAGR Calculator",
+  "firebaseId": "-MJLL0g0KjmrwyiABlEo",
+  "iconUrl": "https://img.icons8.com/clouds/2x/calculator.png",
+  "input": "[]",
+  "inputHashmap": {},
+  "inputList": [
+    {
+      "calId": "-MJLL0g0KjmrwyiABlEo",
+      "data": "{\"inpType\":1,\"length\":20,\"regex\":\"\"}",
+      "firebaseId": "-MJLLRPiauKbRmrmwlIL",
+      "inpId": 0,
+      "isValid": false,
+      "key": "p",
+      "title": "Initial Investment Value",
+      "type": 1
+    },
+    {
+      "calId": "-MJLL0g0KjmrwyiABlEo",
+      "data": "{\"inpType\":1,\"length\":20,\"regex\":\"\"}",
+      "firebaseId": "-MJLLpil333PM20tvpXL",
+      "inpId": 0,
+      "isValid": false,
+      "key": "m",
+      "title": "Ending Investment Value",
+      "type": 1
+    },
+    {
+      "calId": "-MJLL0g0KjmrwyiABlEo",
+      "data": "{\"inpType\":1,\"length\":3,\"regex\":\"\"}",
+      "firebaseId": "-MJLM8eaiObUQzUCHsAw",
+      "inpId": 0,
+      "isValid": false,
+      "key": "n",
+      "title": "Duration of Investments(In years)",
+      "type": 1
+    },
+    {
+      "calId": "-MJLL0g0KjmrwyiABlEo",
+      "data": "{\"redUrl\":\"\",\"action\":1}",
+      "firebaseId": "-MJLXvX7glU2GBHw0Wt-",
+      "inpId": 0,
+      "isValid": false,
+      "key": "a",
+      "title": "Calculate CAGR",
+      "type": 5
+    }
+  ],
+  "output": "[]",
+  "redUrl": "GenericCalculatorActivity",
+  "spinnerHashMap": {},
+  "version": 2
+}
