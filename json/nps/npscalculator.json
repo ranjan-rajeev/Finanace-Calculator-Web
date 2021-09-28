@@ -1,0 +1,155 @@
+{
+  "calId": 8770,
+  "calName": "National Pension System",
+  "firebaseId": "-MJCuzljMK8EUVziz6Ze",
+  "iconUrl": "https://www.oneindia.com/img/2017/09/nps-12-1505195270.jpg",
+  "input": "[]",
+  "inputHashmap": {},
+  "inputList": [
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "data": "{\"inpType\":1,\"length\":20,\"regex\":\"\",\"data\":\"[{\\\"key\\\":\\\"Monthly\\\",\\\"value\\\":\\\"12\\\"},{\\\"key\\\":\\\"Quarterly\\\",\\\"value\\\":\\\"3\\\"},{\\\"key\\\":\\\"Half Yearly\\\",\\\"value\\\":\\\"2\\\"}]\"}",
+      "firebaseId": "-MJQlLJFVaxadPE3ObAP",
+      "inpId": 0,
+      "isValid": false,
+      "key": "pf",
+      "title": "Investment amount",
+      "type": 4
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "data": "{\"inpType\":1,\"length\":2,\"regex\":\"\"}",
+      "firebaseId": "-MJQljQil9Z8W2VehGHB",
+      "inpId": 0,
+      "isValid": false,
+      "key": "n",
+      "title": "Your age (18-60 Years)",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "data": "{\"inpType\":2,\"length\":5,\"regex\":\"\"}",
+      "firebaseId": "-MJQm5jQK2H74p0oswRn",
+      "inpId": 0,
+      "isValid": false,
+      "key": "r",
+      "title": "Expected rate of return(8-15%)",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "data": "{\"redUrl\":\"GenericCalculatorActivity\",\"action\":1}",
+      "firebaseId": "-MJQoI9BcxJxXQoUzdrl",
+      "inpId": 0,
+      "isValid": false,
+      "key": "a",
+      "title": "Calculate",
+      "type": 5
+    }
+  ],
+  "output": "[]",
+  "outputList": [
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJRj_eS53MMo6E4Qa_-",
+      "formulae": " p * ( 1 + ( r / ( f * 100) ) ) *  ( ( ( 1 + ( r / ( f * 100 ) ) ) ^ ( ( 60 - n )  * f )   - 1 ) / ( r / ( f * 100) ))",
+      "outId": 0,
+      "outKey": "x",
+      "outMsg": "Total Maturity Amount ",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJS5QMLRqCLibr51wFf",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "b",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJRkH0H1fm6n_vnY9rL",
+      "formulae": "p  * f  * ( 60 - n  )",
+      "outId": 0,
+      "outKey": "y",
+      "outMsg": "Amount Invested ",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJS5TnR6og54jMG8FSP",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "s",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJRkamirRcqWVVQXHIE",
+      "formulae": "x-y",
+      "outId": 0,
+      "outKey": "z",
+      "outMsg": "Interest Earned",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJS5X2-22I4p_ZWvMZ8",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "v",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJRlAtpz5GJvr6wkXWi",
+      "formulae": "x * 0.60",
+      "outId": 0,
+      "outKey": "i",
+      "outMsg": "Withdrawable Amount",
+      "type": 1
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJS5c5caKVm4NjX8lPV",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "w",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-MJCuzljMK8EUVziz6Ze",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJRlS5kUEbv4gvhPnae",
+      "formulae": "x * 0.40",
+      "outId": 0,
+      "outKey": "j",
+      "outMsg": "Annuity Amount",
+      "type": 1
+    }
+  ],
+  "redUrl": "GenericCalculatorActivity",
+  "spinnerHashMap": {},
+  "version": 1
+}
