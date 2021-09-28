@@ -1,0 +1,143 @@
+{
+  "calId": 160,
+  "calName": "Atal Pension\n            Yojana",
+  "firebaseId": "-M783SXlEWRcTAWxUpXO",
+  "iconUrl": "https://upload.wikimedia.org/wikipedia/en/d/db/Atal_Pension_Yojana.png",
+  "input": "[]",
+  "inputHashmap": {},
+  "inputList": [
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "data": "{\"inpType\":1,\"length\":2,\"regex\":\"\"}",
+      "firebaseId": "-MJLc5jcGoN7VklmVpaB",
+      "inpId": 0,
+      "isValid": false,
+      "key": "n",
+      "title": "Enter your Age(18 to 40 Years)",
+      "type": 1
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "data": "[{\"key\":\"Rs. 1,000/-\",\"value\":\"170000\"},{\"key\":\"Rs. 2,000/-\",\"value\":\"340000\"},{\"key\":\"Rs. 3,000/-\",\"value\":\"510000\"},{\"key\":\"Rs.4,000/-\",\"value\":\"680000\"},{\"key\":\"Rs. 5,000/-\",\"value\":\"850000\"}]",
+      "firebaseId": "-MJLcwRyOZjHlNwg5KfL",
+      "inpId": 0,
+      "isValid": false,
+      "key": "m",
+      "title": "Amount you want to receive monthly pension ",
+      "type": 3
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "data": "[{\"key\":\"Monthly\",\"value\":\"12\"},{\"key\":\"Quarterly\",\"value\":\"3\"},{\"key\":\"Half Yearly\",\"value\":\"2\"}]",
+      "firebaseId": "-MJLeOfDPri7mt1t0gWf",
+      "inpId": 0,
+      "isValid": false,
+      "key": "f",
+      "title": "You will pay your contributions",
+      "type": 3
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "data": "",
+      "firebaseId": "-MJLeYaNK4ur6Wscd3j-",
+      "inpId": 0,
+      "isValid": false,
+      "key": "z",
+      "title": "Retirement Age   : 60 Years",
+      "type": 7
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "data": "{\"redUrl\":\"\",\"action\":1}",
+      "firebaseId": "-MJLlpAWJkFljeVbqisj",
+      "inpId": 0,
+      "isValid": false,
+      "key": "l",
+      "title": "CALCULATE",
+      "type": 5
+    }
+  ],
+  "output": "[]",
+  "outputList": [
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJLf-lNP1xDmIkAQpcC",
+      "formulae": "  ( m * ( 7.89  / ( f * 100 ) ) )  / ( ( 1 + (7.89 / (f * 100 ) ) ) * ( ( ( 1  + ( 7.89 / (f * 100 ) ) ) ^ ( (60 -n) * f ) -1 ) ) ) ",
+      "outId": 0,
+      "outKey": "a",
+      "outMsg": "$F Contribution",
+      "type": 1
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJLfl7sBoN5H9q2p90X",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "c",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "Years",
+      "data": "",
+      "firebaseId": "-MJLfGVnpeKz7VX0_kH1",
+      "formulae": " 60 - n ",
+      "outId": 0,
+      "outKey": "b",
+      "outMsg": "Contribution Period",
+      "type": 1
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJLgs_SqgeGwM0K5x4N",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "e",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJLgmU2hziZWjqMbRBd",
+      "formulae": " a * f * b",
+      "outId": 0,
+      "outKey": "d",
+      "outMsg": "Total Contribution",
+      "type": 1
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "",
+      "data": "",
+      "firebaseId": "-MJQYUt-eNuBMsjMUCiZ",
+      "formulae": "",
+      "outId": 0,
+      "outKey": "j",
+      "outMsg": "",
+      "type": 4
+    },
+    {
+      "calId": "-M783SXlEWRcTAWxUpXO",
+      "curr": "₹",
+      "data": "",
+      "firebaseId": "-MJLh33QpNP0XmNbiHGC",
+      "formulae": "m",
+      "outId": 0,
+      "outKey": "g",
+      "outMsg": "Amount to Nominees",
+      "type": 1
+    }
+  ],
+  "redUrl": "GenericCalculatorActivity",
+  "spinnerHashMap": {},
+  "version": 1
+}
