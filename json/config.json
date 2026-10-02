@@ -1,5 +1,7 @@
 {
   "showAds": false,
   "playStoreVersion": 10,
-  "BANNER_PLACEMENT_ID": "662782841791842_662807035122756"
+  "BANNER_PLACEMENT_ID": "662782841791842_662807035122756",
+  "inAppReviewEnabled": true,
+  "inAppReviewCooldownDays": 3  
 }
