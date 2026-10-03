@@ -19,7 +19,13 @@
         "images": [
           {
             "id": "banner_1",
-            "imageUrl": "https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/assets/banner-1.png",
+            "imageUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/images/banner_1.jpg",
+            "actionUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
+            "actionType": "WEB"
+          },
+          {
+            "id": "banner_2",
+            "imageUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/images/banner_1.jpg",
             "actionUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
             "actionType": "WEB"
           }
