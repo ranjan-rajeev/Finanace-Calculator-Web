@@ -19,13 +19,7 @@
         "images": [
           {
             "id": "banner_1",
-            "imageUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/images/banner_1.jpg",
-            "actionUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
-            "actionType": "WEB"
-          },
-          {
-            "id": "banner_2",
-            "imageUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/images/banner_1.jpg",
+            "imageUrl": "https://raw.githubusercontent.com/ranjan-rajeev/Finanace-Calculator-Web/main/assets/banner-1.png",
             "actionUrl": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/",
             "actionType": "WEB"
           }
@@ -223,9 +217,18 @@
       }
     },
     {
+      "type": "WEB_VIEW",
+      "id": "web_calculator",
+      "position": 12,
+      "data": {
+        "title": "Web Calculator",
+        "url": "https://ranjan-rajeev.github.io/Finanace-Calculator-Web/"
+      }
+    },
+    {
       "type": "SPACER",
       "id": "spacer_bottom",
-      "position": 12,
+      "position": 13,
       "data": {
         "heightDp": 24
       }
@@ -233,7 +236,7 @@
     {
       "type": "AD_PLACEHOLDER",
       "id": "ad_bottom",
-      "position": 13,
+      "position": 14,
       "data": {
         "placementId": "ca-app-pub-0000000000000000/0000000000",
         "heightDp": 50
